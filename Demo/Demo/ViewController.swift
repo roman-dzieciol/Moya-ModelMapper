@@ -29,13 +29,13 @@ class ViewController: UIViewController {
             endpointClosure: MoyaProvider.DefaultEndpointMapping,
             requestClosure: MoyaProvider.DefaultRequestMapping,
             stubClosure: MoyaProvider.NeverStub,
-            manager: Alamofire.Manager.sharedInstance,
+            manager: Alamofire.SessionManager.default,
             plugins: []
         )
         
         // Example of mapping array of objects
-        provider.request(GitHub.Repos("mjacko")) { (result) in
-            if case .Success(let response) = result {
+        provider.request(GitHub.repos("mjacko")) { (result) in
+            if case .success(let response) = result {
                 do {
                     let repos = try response.mapArray() as [Repository]
                     print(repos)
@@ -46,8 +46,8 @@ class ViewController: UIViewController {
         }
         
         // Example of using keyPath
-        provider.request(GitHub.Repo("moya/moya")) { result in
-            if case .Success(let response) = result {
+        provider.request(GitHub.repo("moya/moya")) { result in
+            if case .success(let response) = result {
                 do {
                     let user = try response.mapObject(withKeyPath: "owner") as User
                     print(user)
